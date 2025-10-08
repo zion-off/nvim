@@ -172,6 +172,7 @@ return {
           width = 0.3,
         },
       },
+      scroll = {},
     },
   },
   {
