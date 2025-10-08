@@ -6,6 +6,7 @@ return {
     opts = {
       ---@type lspconfig.options
       servers = {
+        marksman = false,
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
         gopls = {
@@ -211,6 +212,14 @@ return {
       -- Example:
       enabled = true, -- Enable autosave
       delay = 1000, -- Save after 1 second of inactivity
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = {
+        markdown = {},
+      },
     },
   },
 }
