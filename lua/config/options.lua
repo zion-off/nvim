@@ -3,3 +3,5 @@
 -- Add any additional options here
 vim.opt.autochdir = true
 vim.opt.spell = false
+
+vim.opt.background = "dark"
