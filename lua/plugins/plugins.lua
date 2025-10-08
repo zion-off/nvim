@@ -165,6 +165,12 @@ return {
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
       },
+      terminal = {
+        win = {
+          position = "right",
+          width = 0.3,
+        },
+      },
     },
   },
   {

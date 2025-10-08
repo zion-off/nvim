@@ -19,13 +19,15 @@ require("lazy").setup({
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     {
-      "navarasu/onedark.nvim",
+      "olimorris/onedarkpro.nvim",
       priority = 1000,
       config = function()
-        require("onedark").setup({
-          style = "warmer",
+        require("onedarkpro").setup({
+          options = {
+            theme = "onedark_dark", -- Use the dark variant
+          },
         })
-        require("onedark").load()
+        vim.cmd("colorscheme onedark_dark")
       end,
     },
     {
