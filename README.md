@@ -1,1 +1,1 @@
-# Neovim
+# best neovim config in the world
