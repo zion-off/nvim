@@ -32,10 +32,13 @@ return {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀
       ]]
 
-      logo = string.rep("\n", 2) .. logo .. "\n\n"
+      logo = string.rep("\n", 2) .. logo .. "\n"
       opts.config.header = vim.split(logo, "\n")
       opts.config.header_hl = "DashboardLogo"
       vim.api.nvim_set_hl(0, "DashboardLogo", { fg = "#ffffff" })
+      opts.config.footer = function()
+        return {}
+      end
     end,
   },
 }
