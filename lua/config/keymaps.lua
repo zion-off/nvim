@@ -8,4 +8,6 @@ vim.keymap.set("n", "<leader>xs", function()
   if cmd ~= "" then
     vim.fn.system(cmd)
   end
-end, { desc = "Execute shell command silently" })
+end, { desc = "Execute shell command" })
+
+vim.keymap.set("n", "<leader>ac", ":ClaudeCode<CR>", { desc = "Toggle Claude Code" })
