@@ -11,3 +11,7 @@ vim.keymap.set("n", "<leader>xs", function()
 end, { desc = "Execute shell command" })
 
 vim.keymap.set("n", "<leader>ac", ":ClaudeCode<CR>", { desc = "Toggle Claude Code" })
+
+-- Override terminal keybindings to open in current buffer
+vim.keymap.set("n", "<leader>ft", ":terminal<CR>", { desc = "Terminal (current buffer)" })
+vim.keymap.set("n", "<leader>fT", ":terminal<CR>", { desc = "Terminal (current buffer)" })
