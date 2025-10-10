@@ -47,14 +47,9 @@ return {
         lualine_c = {
           {
             function()
-              local blame = vim.fn.system("git blame -L " .. vim.fn.line(".") .. "," .. vim.fn.line(".") .. " " .. vim.fn.expand("%"))
-              if vim.v.shell_error ~= 0 then
-                return ""
-              end
-              local author = blame:match("%((.-)%s+%d%d%d%d%-")
-              local date = blame:match("%d%d%d%d%-%d%d%-%d%d")
-              if author and date then
-                return author .. " • " .. date
+              local gitsigns = vim.b.gitsigns_blame_line
+              if gitsigns then
+                return gitsigns
               end
               return ""
             end,
