@@ -1,4 +1,5 @@
 return {
+  -- Dashboard configuration
   {
     "nvimdev/dashboard-nvim",
     opts = function(_, opts)
@@ -40,5 +41,36 @@ return {
         return {}
       end
     end,
+  },
+
+  -- Which-key AI group
+  {
+    "folke/which-key.nvim",
+    opts = function(_, opts)
+      opts.spec = opts.spec or {}
+      table.insert(opts.spec, {
+        { "<leader>a", group = "ai", icon = "󰧑" },
+      })
+    end,
+  },
+
+  -- Mini.animate configuration
+  {
+    "nvim-mini/mini.animate",
+    event = "VeryLazy",
+    opts = {
+      scroll = {
+        enable = false,
+      },
+      resize = {
+        enable = false,
+      },
+      open = {
+        enable = false,
+      },
+      close = {
+        enable = false,
+      },
+    },
   },
 }

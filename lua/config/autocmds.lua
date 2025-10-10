@@ -1,15 +1,12 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
---
--- Add any additional autocmds here
--- with `vim.api.nvim_create_autocmd`
---
--- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
--- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- Disable default spell autocmd
 pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 
--- Auto-save on leaving insert mode and text changes in normal mode
+-- =====================
+-- Auto-save Configuration
+-- =====================
 vim.api.nvim_create_autocmd({ "InsertLeavePre", "TextChanged", "TextChangedP" }, {
   callback = function()
     if vim.bo.modifiable and not vim.bo.readonly then
@@ -18,13 +15,14 @@ vim.api.nvim_create_autocmd({ "InsertLeavePre", "TextChanged", "TextChangedP" },
   end,
 })
 
--- Highlight active window with border
+-- =====================
+-- Window Dimming Configuration
+-- =====================
 -- Adjust this value to control inactive window dimming (0.0 = black, 1.0 = same as active)
 local INACTIVE_WINDOW_DIM_FACTOR = 0.75
 
 -- Function to set window highlights relative to current theme
 local function set_window_highlights()
-  -- Get the current Normal highlight group
   local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
 
   -- Active window keeps the normal background
@@ -59,6 +57,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- Set initial highlight groups
 set_window_highlights()
 
+-- Apply window highlighting on focus change
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
   callback = function()
     vim.wo.winhl = "Normal:ActiveWindow,NormalNC:InactiveWindow"
