@@ -3,6 +3,7 @@
 -- Add any additional options here
 vim.opt.autochdir = true
 vim.opt.spell = false
+vim.opt.autowriteall = true -- Auto-save files
 
 vim.opt.background = "dark"
 

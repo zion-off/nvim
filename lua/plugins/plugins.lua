@@ -207,15 +207,6 @@ return {
     end,
   },
   {
-    "brianhuster/autosave.nvim",
-    opts = {
-      -- Configuration options for autosave.nvim
-      -- Example:
-      enabled = true, -- Enable autosave
-      delay = 1000, -- Save after 1 second of inactivity
-    },
-  },
-  {
     "mfussenegger/nvim-lint",
     opts = {
       linters_by_ft = {
