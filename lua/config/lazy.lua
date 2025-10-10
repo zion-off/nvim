@@ -18,17 +18,6 @@ require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    {
-      "nyoom-engineering/oxocarbon.nvim",
-      lazy = false,
-      priority = 1000,
-      config = function()
-        vim.cmd.colorscheme "oxocarbon"
-      end,
-    },
-    {
-      "DaikyXendo/nvim-material-icon",
-    },
     { import = "plugins" },
   },
   defaults = {
