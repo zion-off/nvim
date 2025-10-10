@@ -63,12 +63,4 @@ return {
     "DaikyXendo/nvim-material-icon",
   },
 
-  -- Lualine configuration
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function()
-      return {}
-    end,
-  },
 }
