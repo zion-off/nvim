@@ -11,14 +11,14 @@ return {
           },
           onedark_dark = {
             bg = "#0f0f0f",
-          }
+          },
         },
         highlights = {
           TermCursor = { bg = "#e8e8e8" },
         },
         options = {
           transparency = false,
-        }
+        },
       })
       vim.cmd("colorscheme onedark")
     end,
@@ -40,7 +40,14 @@ return {
     ---@type snacks.Config
     opts = {
       animate = {},
-      picker = {},
+      picker = {
+        sources = {
+          explorer = {
+            hidden = true,
+            ignored = true,
+          },
+        },
+      },
       terminal = {
         win = {
           position = "right",
