@@ -22,23 +22,23 @@ local ACTIVE_WINDOW_DIM_FACTOR = 0.85
 
 local function set_window_highlights()
   local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
-  
+
   if normal_hl.bg then
     local bg = normal_hl.bg
     local r = math.floor(bg / 65536)
     local g = math.floor((bg % 65536) / 256)
     local b = bg % 256
-    
+
     r = math.floor(r * ACTIVE_WINDOW_DIM_FACTOR)
     g = math.floor(g * ACTIVE_WINDOW_DIM_FACTOR)
     b = math.floor(b * ACTIVE_WINDOW_DIM_FACTOR)
-    
+
     local dimmed_bg = r * 65536 + g * 256 + b
     vim.api.nvim_set_hl(0, "ActiveWindow", { bg = dimmed_bg })
   else
     vim.api.nvim_set_hl(0, "ActiveWindow", { bg = "#0d0d0d" })
   end
-  
+
   vim.api.nvim_set_hl(0, "InactiveWindow", { bg = normal_hl.bg })
 end
 
@@ -60,5 +60,21 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
 vim.api.nvim_create_autocmd("WinLeave", {
   callback = function()
     vim.wo.winhl = "Normal:InactiveWindow"
+  end,
+})
+
+-- =====================
+-- Terminal Configuration
+-- =====================
+-- Disable auto-entering terminal mode when navigating to terminal buffers
+-- First, remove LazyVim's default terminal autocmd
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_terminal")
+
+-- Create our own terminal autocmd that does NOT auto-enter insert mode
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+  pattern = "term://*",
+  callback = function()
+    -- Stay in normal mode when entering terminal buffer
+    vim.cmd("stopinsert")
   end,
 })
