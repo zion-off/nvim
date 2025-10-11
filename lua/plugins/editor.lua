@@ -43,7 +43,7 @@ return {
     end,
   },
 
-  -- Which-key AI group
+  -- Which-key
   {
     "folke/which-key.nvim",
     opts = function(_, opts)

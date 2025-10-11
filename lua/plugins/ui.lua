@@ -27,7 +27,7 @@ return {
   -- Oxocarbon theme
   {
     "nyoom-engineering/oxocarbon.nvim",
-    lazy = false,
+    -- lazy = false,
     priority = 1000,
     config = function()
       -- vim.cmd("colorscheme oxocarbon")
