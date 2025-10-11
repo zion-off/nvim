@@ -6,5 +6,8 @@ vim.opt.spell = false
 vim.opt.autowriteall = true -- Auto-save files
 vim.opt.background = "dark"
 
+vim.opt.wrap = true
+vim.opt.breakindent = true
+
 -- Load terminal colors
 require("config.colors").setup()
