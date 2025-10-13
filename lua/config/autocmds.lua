@@ -67,14 +67,15 @@ vim.api.nvim_create_autocmd("WinLeave", {
 -- Terminal Configuration
 -- =====================
 -- Disable auto-entering terminal mode when navigating to terminal buffers
--- First, remove LazyVim's default terminal autocmd
+-- Remove LazyVim's default terminal autocmd that auto-enters insert mode
 pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_terminal")
 
--- Create our own terminal autocmd that does NOT auto-enter insert mode
-vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+-- Configure terminal buffers to have cleaner UI
+vim.api.nvim_create_autocmd("TermOpen", {
   pattern = "term://*",
   callback = function()
-    -- Stay in normal mode when entering terminal buffer
-    vim.cmd("stopinsert")
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
   end,
 })
+

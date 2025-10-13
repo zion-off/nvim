@@ -28,3 +28,6 @@ vim.keymap.set("n", "<leader>ft", function()
   vim.fn.chansend(vim.b.terminal_job_id, "cd " .. vim.fn.shellescape(target_dir) .. "\n")
 end, { desc = "Terminal (project root)" })
 vim.keymap.set("n", "<leader>fT", ":terminal<CR>", { desc = "Terminal (current buffer)" })
+
+-- Exit terminal mode with Escape
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
