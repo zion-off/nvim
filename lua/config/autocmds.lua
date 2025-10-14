@@ -64,6 +64,26 @@ vim.api.nvim_create_autocmd("WinLeave", {
 })
 
 -- =====================
+-- Ruff Auto-fix Configuration
+-- =====================
+-- Auto-fix Python files with Ruff when exiting insert mode
+vim.api.nvim_create_autocmd("InsertLeave", {
+  pattern = "*.py",
+  callback = function()
+    local clients = vim.lsp.get_clients({ name = "ruff" })
+    if #clients > 0 then
+      vim.lsp.buf.code_action({
+        context = {
+          only = { "source.organizeImports", "source.fixAll" },
+          diagnostics = {},
+        },
+        apply = true,
+      })
+    end
+  end,
+})
+
+-- =====================
 -- Terminal Configuration
 -- =====================
 -- Disable auto-entering terminal mode when navigating to terminal buffers

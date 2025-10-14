@@ -7,7 +7,14 @@ return {
       servers = {
         marksman = false,
         pyright = {},
-        ruff = {},
+        ruff = {
+          init_options = {
+            settings = {
+              organizeImports = true,
+              fixAll = true,
+            },
+          },
+        },
         gopls = {
           settings = {
             gopls = {
