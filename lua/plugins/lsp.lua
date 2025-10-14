@@ -7,6 +7,7 @@ return {
       servers = {
         marksman = false,
         pyright = {},
+        ruff = {},
         gopls = {
           settings = {
             gopls = {
