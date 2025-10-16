@@ -3,18 +3,10 @@ return {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
     opts = {
-      ---@type lspconfig.options
       servers = {
         marksman = false,
         pyright = {},
-        ruff = {
-          init_options = {
-            settings = {
-              organizeImports = true,
-              fixAll = true,
-            },
-          },
-        },
+        ruff = {},
         gopls = {
           settings = {
             gopls = {
@@ -55,22 +47,37 @@ return {
       },
     },
     setup = {
-      gopls = function(_, opts)
+      gopls = function(_, _opts)
         -- workaround for gopls not supporting semanticTokensProvider
         -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
         LazyVim.lsp.on_attach(function(client, _)
           if not client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens
-            client.server_capabilities.semanticTokensProvider = {
-              full = true,
-              legend = {
-                tokenTypes = semantic.tokenTypes,
-                tokenModifiers = semantic.tokenModifiers,
-              },
-              range = true,
-            }
+            if semantic then
+              client.server_capabilities.semanticTokensProvider = {
+                full = true,
+                legend = {
+                  tokenTypes = semantic.tokenTypes,
+                  tokenModifiers = semantic.tokenModifiers,
+                },
+                range = true,
+              }
+            end
           end
         end, "gopls")
+      end,
+      ruff = function(_, _opts)
+        -- Auto format Python files with Ruff when exiting insert mode
+        LazyVim.lsp.on_attach(function(client, bufnr)
+          if client.name == "ruff" then
+            vim.api.nvim_create_autocmd("InsertLeave", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ async = false, name = "ruff" })
+              end,
+            })
+          end
+        end, "ruff")
       end,
     },
   },
