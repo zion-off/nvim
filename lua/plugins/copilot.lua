@@ -23,14 +23,15 @@ return {
           },
         })
 
-        -- Custom Tab mapping: accept suggestion if visible, otherwise insert tab
+        -- Custom Tab mapping: accept suggestion if visible, otherwise fallback to default tab
         vim.keymap.set("i", "<Tab>", function()
           if require("copilot.suggestion").is_visible() then
             require("copilot.suggestion").accept()
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+            -- Fallback: execute default tab behavior
+            return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
           end
-        end, { desc = "Accept Copilot suggestion or insert tab" })
+        end, { desc = "Accept Copilot suggestion or insert tab", expr = true })
       end,
     },
     { "nvim-lua/plenary.nvim", branch = "master" },
