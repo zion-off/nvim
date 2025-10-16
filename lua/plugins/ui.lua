@@ -59,4 +59,13 @@ return {
     "DaikyXendo/nvim-material-icon",
   },
 
+  -- Scrollbar
+  {
+    "petertriho/nvim-scrollbar",
+    event = "VeryLazy",
+    config = function()
+      require("scrollbar").setup()
+    end,
+  },
+
 }
