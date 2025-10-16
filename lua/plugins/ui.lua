@@ -42,10 +42,6 @@ return {
       animate = {},
       picker = {
         sources = {
-          explorer = {
-            hidden = true,
-            ignored = true,
-          },
         },
       },
       terminal = {
