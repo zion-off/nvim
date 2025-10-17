@@ -64,26 +64,6 @@ vim.api.nvim_create_autocmd("WinLeave", {
 })
 
 -- =====================
--- Ruff Auto-fix Configuration
--- =====================
--- Auto-fix Python files with Ruff when exiting insert mode
-vim.api.nvim_create_autocmd("InsertLeave", {
-  pattern = "*.py",
-  callback = function()
-    local clients = vim.lsp.get_clients({ name = "ruff" })
-    if #clients > 0 then
-      vim.lsp.buf.code_action({
-        context = {
-          only = { "source.organizeImports", "source.fixAll" },
-          diagnostics = {},
-        },
-        apply = true,
-      })
-    end
-  end,
-})
-
--- =====================
 -- Prettier/ESLint Auto-format Configuration
 -- =====================
 -- Auto-format JS/TS files when exiting insert mode
@@ -108,5 +88,73 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
   end,
+})
+
+-- =====================
+-- LSP Configuration
+-- =====================
+-- Disable Ruff hover in favor of Pyright
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.name == 'ruff' then
+      -- Disable hover in favor of Pyright
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
+  desc = 'LSP: Disable hover capability from Ruff',
+})
+
+-- =====================
+-- Ruff Auto-fix on InsertLeave (Python)
+-- =====================
+-- Toggle: set vim.g.ruff_auto_fix_insertleave = false in your init.lua to disable.
+vim.g.ruff_auto_fix_insertleave = vim.g.ruff_auto_fix_insertleave ~= false
+
+-- Throttle to avoid multiple quick triggers when leaving Insert mode repeatedly
+local ruff_last_fix = 0
+local RUFF_FIX_DEBOUNCE_MS = 800
+
+local function ruff_auto_fix(bufnr)
+  if not vim.g.ruff_auto_fix_insertleave then
+    return
+  end
+  if vim.bo[bufnr].filetype ~= 'python' then
+    return
+  end
+  -- Only run if buffer is modifiable and not read-only
+  if not (vim.bo[bufnr].modifiable and not vim.bo[bufnr].readonly) then
+    return
+  end
+  local now = vim.loop.hrtime() / 1e6
+  if (now - ruff_last_fix) < RUFF_FIX_DEBOUNCE_MS then
+    return
+  end
+  ruff_last_fix = now
+
+  -- Prefer Conform since it's configured with ruff_fix, ruff_format, ruff_organize_imports
+  local ok_conform, conform = pcall(require, 'conform')
+  if ok_conform then
+    conform.format({ async = true, lsp_fallback = true, bufnr = bufnr })
+    return
+  end
+
+  -- Fallback: try LSP code action 'source.fixAll.ruff'
+  local params = {
+    context = { only = { 'source.fixAll.ruff' } },
+  }
+  vim.lsp.buf.code_action(params)
+end
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  pattern = '*.py',
+  callback = function(args)
+    ruff_auto_fix(args.buf)
+  end,
+  desc = 'Ruff: auto-fix (ruff_fix/format/imports) when leaving insert mode',
 })
 
