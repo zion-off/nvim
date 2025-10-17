@@ -42,7 +42,15 @@ return {
       animate = {},
       picker = {
         sources = {
+          explorer = {
+            hidden = false,
+            ignored = false,
+          },
         },
+      },
+      explorer = {
+        hidden = false,
+        ignored = false,
       },
       terminal = {
         win = {
@@ -67,5 +75,4 @@ return {
       require("scrollbar").setup()
     end,
   },
-
 }

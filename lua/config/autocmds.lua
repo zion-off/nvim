@@ -84,6 +84,17 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 })
 
 -- =====================
+-- Prettier/ESLint Auto-format Configuration
+-- =====================
+-- Auto-format JS/TS files when exiting insert mode
+vim.api.nvim_create_autocmd("InsertLeave", {
+  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
+  callback = function()
+    require("conform").format({ async = false })
+  end,
+})
+
+-- =====================
 -- Terminal Configuration
 -- =====================
 -- Disable auto-entering terminal mode when navigating to terminal buffers

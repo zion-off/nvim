@@ -66,19 +66,6 @@ return {
           end
         end, "gopls")
       end,
-      ruff = function(_, _opts)
-        -- Auto format Python files with Ruff when exiting insert mode
-        LazyVim.lsp.on_attach(function(client, bufnr)
-          if client.name == "ruff" then
-            vim.api.nvim_create_autocmd("InsertLeave", {
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ async = false, name = "ruff" })
-              end,
-            })
-          end
-        end, "ruff")
-      end,
     },
   },
 
@@ -149,6 +136,7 @@ return {
         "shfmt",
         "flake8",
         "eslint_d",
+        "prettier",
       },
     },
   },
