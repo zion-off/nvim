@@ -53,12 +53,20 @@ set_window_highlights()
 -- Apply window highlighting on focus change
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
   callback = function()
+    -- Skip diff windows to preserve diff highlighting
+    if vim.wo.diff then
+      return
+    end
     vim.wo.winhl = "Normal:ActiveWindow"
   end,
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
   callback = function()
+    -- Skip diff windows to preserve diff highlighting
+    if vim.wo.diff then
+      return
+    end
     vim.wo.winhl = "Normal:InactiveWindow"
   end,
 })

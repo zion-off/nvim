@@ -43,6 +43,13 @@ return {
     config = function()
       require("claudecode").setup({
         open_command = "vsplit",
+        diff_opts = {
+          layout = "vertical", -- Use vertical splits for diffs
+          open_in_new_tab = false, -- Keep diffs in current tab for easier access
+          keep_terminal_focus = false, -- Focus on diff window instead of terminal
+          hide_terminal_in_new_tab = false, -- Keep terminal visible when opening in new tab
+          on_new_file_reject = "keep_empty", -- Keep empty buffer when rejecting new file diffs
+        },
       })
     end,
   },
