@@ -29,8 +29,6 @@ return {
 ⠀⠀⡿⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⠀⠀⠈⠉⠙⠓⠒⠒⠶⠶⠶⠤⠤⠤⠤⠶⣤⠴⣶⣖⡟⠉⡇
 ⠀⠀⠀⠀⠀⠀⠀⠀⠿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟⠀⢾⡽⣆⡾⠁
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠈⠛⣿⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀
       ]]
 
       logo = string.rep("\n", 2) .. logo .. "\n"
@@ -54,26 +52,6 @@ return {
     end,
   },
 
-  -- Mini.animate configuration
-  {
-    "nvim-mini/mini.animate",
-    event = "VeryLazy",
-    opts = {
-      scroll = {
-        enable = false,
-      },
-      resize = {
-        enable = false,
-      },
-      open = {
-        enable = false,
-      },
-      close = {
-        enable = false,
-      },
-    },
-  },
-
   -- Gitsigns configuration
   {
     "lewis6991/gitsigns.nvim",
@@ -82,6 +60,29 @@ return {
       current_line_blame_opts = {
         delay = 300,
       },
+    },
+  },
+  -- Cursor animation
+  {
+    "sphamba/smear-cursor.nvim",
+
+    opts = {
+      -- Cursor color
+      cursor_color = "#c6c6c6",
+
+      -- Smear cursor when switching buffers or windows.
+      smear_between_buffers = true,
+
+      -- Smear cursor when moving within line or to neighbor lines.
+      -- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
+      smear_between_neighbor_lines = true,
+
+      -- Draw the smear in buffer space instead of screen space when scrolling
+      scroll_buffer_space = true,
+
+      -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+      -- Smears will blend better on all backgrounds.
+      legacy_computing_symbols_support = false,
     },
   },
 }
