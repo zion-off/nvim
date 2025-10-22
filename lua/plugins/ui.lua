@@ -74,15 +74,11 @@ return {
     config = function()
       require("scrollbar").setup({
         marks = {
-          Search = { text = { "█", "█" } },
-          Error = { text = { "█", "█" } },
-          Warn = { text = { "█", "█" } },
-          Info = { text = { "█", "█" } },
-          Hint = { text = { "█", "█" } },
-          Misc = { text = { "█", "█" } },
-          GitAdd = { text = { "█", "█" } },
-          GitChange = { text = { "█", "█" } },
-          GitDelete = { text = { "█", "█" } },
+          Error = { text = "█" },
+          Warn = { text = "█" },
+          Info = { text = "█" },
+          Hint = { text = "█" },
+          Misc = { text = "█" },
         },
       })
     end,
