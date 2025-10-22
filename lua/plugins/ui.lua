@@ -72,7 +72,19 @@ return {
     "petertriho/nvim-scrollbar",
     event = "VeryLazy",
     config = function()
-      require("scrollbar").setup()
+      require("scrollbar").setup({
+        marks = {
+          Search = { text = { "█", "█" } },
+          Error = { text = { "█", "█" } },
+          Warn = { text = { "█", "█" } },
+          Info = { text = { "█", "█" } },
+          Hint = { text = { "█", "█" } },
+          Misc = { text = { "█", "█" } },
+          GitAdd = { text = { "█", "█" } },
+          GitChange = { text = { "█", "█" } },
+          GitDelete = { text = { "█", "█" } },
+        },
+      })
     end,
   },
 }

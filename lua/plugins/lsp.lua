@@ -105,10 +105,6 @@ return {
     opts = {
       linters_by_ft = {
         markdown = {},
-        typescript = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-        javascript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
       },
     },
   },
@@ -126,10 +122,7 @@ return {
           -- To organize the imports.
           "ruff_organize_imports",
         },
-        javascript = { "prettier", "eslint_d" },
-        javascriptreact = { "prettier", "eslint_d" },
-        typescript = { "prettier", "eslint_d" },
-        typescriptreact = { "prettier", "eslint_d" },
+        -- TypeScript/JavaScript formatting handled by LazyVim extras
       },
     },
   },
