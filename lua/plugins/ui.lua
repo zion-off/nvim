@@ -74,11 +74,11 @@ return {
     config = function()
       require("scrollbar").setup({
         marks = {
-          Error = { text = "█" },
-          Warn = { text = "█" },
-          Info = { text = "█" },
-          Hint = { text = "█" },
-          Misc = { text = "█" },
+          Error = { text = { "█" } },
+          Warn = { text = { "█" } },
+          Info = { text = { "█" } },
+          Hint = { text = { "█" } },
+          Misc = { text = { "█" } },
         },
       })
     end,
