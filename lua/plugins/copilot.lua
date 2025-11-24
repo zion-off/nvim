@@ -28,10 +28,10 @@ return {
           if require("copilot.suggestion").is_visible() then
             require("copilot.suggestion").accept()
           else
-            -- Fallback: execute default tab behavior
-            return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
+            -- Fallback: let blink.cmp or default tab behavior handle it
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
           end
-        end, { desc = "Accept Copilot suggestion or insert tab", expr = true })
+        end, { desc = "Accept Copilot suggestion or fallback to default tab" })
       end,
     },
     { "nvim-lua/plenary.nvim", branch = "master" },
