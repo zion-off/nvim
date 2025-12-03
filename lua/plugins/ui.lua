@@ -2,7 +2,7 @@ return {
   -- OneDarkPro theme
   {
     "olimorris/onedarkpro.nvim",
-    priority = 1000,
+    priority = 0,
     config = function()
       require("onedarkpro").setup({
         colors = {
@@ -20,7 +20,7 @@ return {
           transparency = false,
         },
       })
-      vim.cmd("colorscheme onedark")
+      -- vim.cmd("colorscheme onedark")
     end,
   },
 
@@ -28,12 +28,21 @@ return {
   {
     "nyoom-engineering/oxocarbon.nvim",
     -- lazy = false,
-    priority = 1000,
+    priority = 0,
     config = function()
       -- vim.cmd("colorscheme oxocarbon")
     end,
   },
 
+  -- Jellybeans theme
+  {
+    "metalelf0/jellybeans-nvim",
+    dependencies = { "rktjmp/lush.nvim" },
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme jellybeans-nvim")
+    end,
+  },
   -- Snacks.nvim configuration
   {
     "folke/snacks.nvim",
