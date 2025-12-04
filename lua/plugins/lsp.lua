@@ -1,4 +1,12 @@
 return {
+  -- venv-selector with pyenv support
+  {
+    "linux-cultist/venv-selector.nvim",
+    opts = {
+      pyenv_path = "/Users/atibjawad.zion/.pyenv/versions",
+    },
+  },
+
   {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
@@ -69,9 +77,6 @@ return {
     },
   },
 
-  -- TypeScript support
-  { import = "lazyvim.plugins.extras.lang.typescript" },
-
   -- Treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
@@ -135,7 +140,7 @@ return {
         "stylua",
         "shellcheck",
         "shfmt",
-        "flake8",
+        "ruff",
         "eslint_d",
         "prettier",
       },
