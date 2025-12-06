@@ -25,10 +25,15 @@ return {
 
         -- Custom Tab mapping: accept suggestion if visible, otherwise fallback to default tab
         vim.keymap.set("i", "<Tab>", function()
-          if require("copilot.suggestion").is_visible() then
+          -- Safely check if copilot suggestion is visible
+          local ok, is_visible = pcall(function()
+            return require("copilot.suggestion").is_visible()
+          end)
+
+          if ok and is_visible then
             require("copilot.suggestion").accept()
           else
-            -- Fallback: let blink.cmp or default tab behavior handle it
+            -- Fallback: default tab behavior (blink.cmp will handle completion if active)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
           end
         end, { desc = "Accept Copilot suggestion or fallback to default tab" })

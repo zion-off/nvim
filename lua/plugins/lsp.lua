@@ -3,7 +3,7 @@ return {
   {
     "linux-cultist/venv-selector.nvim",
     opts = {
-      pyenv_path = "/Users/atibjawad.zion/.pyenv/versions",
+      pyenv_path = vim.fn.expand("~/.pyenv/versions"),
     },
   },
 

@@ -7,7 +7,8 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- =====================
 -- Auto-save Configuration
 -- =====================
-vim.api.nvim_create_autocmd({ "InsertLeavePre", "TextChanged", "TextChangedP" }, {
+-- Note: Removed InsertLeavePre to avoid blocking mode transitions
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedP" }, {
   callback = function()
     if vim.bo.modifiable and not vim.bo.readonly then
       vim.cmd("silent! update")
@@ -78,7 +79,8 @@ vim.api.nvim_create_autocmd("WinLeave", {
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
   callback = function()
-    require("conform").format({ async = false })
+    -- Use async formatting to avoid blocking the editor
+    require("conform").format({ async = true })
   end,
 })
 

@@ -8,6 +8,9 @@ vim.opt.spell = false
 vim.opt.autowriteall = true -- Auto-save files
 vim.opt.background = "dark"
 
+-- Increase timeout for which-key to prevent space key issues
+vim.opt.timeoutlen = 400
+
 vim.opt.wrap = true
 vim.opt.breakindent = true
 
