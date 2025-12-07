@@ -8,7 +8,7 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- Auto-save Configuration
 -- =====================
 -- Note: Removed InsertLeavePre to avoid blocking mode transitions
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedP" }, {
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedP", "InsertLeave" }, {
   callback = function()
     if vim.bo.modifiable and not vim.bo.readonly then
       vim.cmd("silent! update")
