@@ -20,6 +20,29 @@ return {
             hidden = false,
             ignored = false,
           },
+          grep = {
+            hidden = false,
+            ignored = false,
+            exclude = {
+              ".git",
+              "node_modules",
+              "bower_components",
+              "vendor",
+              "__pycache__",
+              ".pytest_cache",
+              "*.pyc",
+              ".next",
+              ".nuxt",
+              "dist",
+              "build",
+              "out",
+              ".cache",
+              "coverage",
+              "target",
+              ".hg",
+              ".svn",
+            },
+          },
         },
       },
       explorer = {
@@ -63,7 +86,27 @@ return {
     build = function()
       require("fff.download").download_or_build_binary()
     end,
-    opts = {},
+    opts = {
+      fd_extra_args = {
+        "--exclude", ".git",
+        "--exclude", "node_modules",
+        "--exclude", "bower_components",
+        "--exclude", "vendor",
+        "--exclude", "__pycache__",
+        "--exclude", ".pytest_cache",
+        "--exclude", "*.pyc",
+        "--exclude", ".next",
+        "--exclude", ".nuxt",
+        "--exclude", "dist",
+        "--exclude", "build",
+        "--exclude", "out",
+        "--exclude", ".cache",
+        "--exclude", "coverage",
+        "--exclude", "target",
+        "--exclude", ".hg",
+        "--exclude", ".svn",
+      },
+    },
     keys = {
       {
         "<leader>ff",
