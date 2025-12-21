@@ -72,17 +72,6 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 
--- =====================
--- Prettier/ESLint Auto-format Configuration
--- =====================
--- Auto-format JS/TS files when exiting insert mode
-vim.api.nvim_create_autocmd("InsertLeave", {
-  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
-  callback = function()
-    -- Use async formatting to avoid blocking the editor
-    require("conform").format({ async = true })
-  end,
-})
 
 -- =====================
 -- Terminal Configuration
