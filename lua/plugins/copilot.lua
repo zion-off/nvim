@@ -21,6 +21,14 @@ return {
             enabled = true,
             auto_refresh = false,
           },
+          filetypes = {
+            ["*"] = true,
+          },
+          -- Suppress WARN-level notifications (like "copilot is disabled")
+          -- Only show ERROR-level messages as notifications
+          logger = {
+            print_log_level = vim.log.levels.ERROR,
+          },
         })
 
         -- Custom Tab mapping: accept suggestion if visible, otherwise fallback to default tab
