@@ -7,8 +7,8 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- =====================
 -- Auto-save Configuration
 -- =====================
--- Note: Removed InsertLeavePre to avoid blocking mode transitions
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedP", "InsertLeave" }, {
+-- Save on InsertLeave and FocusLost (less frequent than every keystroke)
+vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
   callback = function()
     if vim.bo.modifiable and not vim.bo.readonly then
       vim.cmd("silent! update")
@@ -72,17 +72,6 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 
--- =====================
--- Prettier/ESLint Auto-format Configuration
--- =====================
--- Auto-format JS/TS files when exiting insert mode
-vim.api.nvim_create_autocmd("InsertLeave", {
-  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
-  callback = function()
-    -- Use async formatting to avoid blocking the editor
-    require("conform").format({ async = true })
-  end,
-})
 
 -- =====================
 -- Terminal Configuration

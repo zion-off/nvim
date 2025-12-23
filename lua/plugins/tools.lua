@@ -35,7 +35,7 @@ return {
     },
   },
   -- Diffview integration
-  { "sindrets/diffview.nvim" },
+  { "sindrets/diffview.nvim", cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" } },
   -- Claude Code integration
   {
     "coder/claudecode.nvim",
