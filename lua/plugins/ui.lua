@@ -11,6 +11,9 @@ return {
   -- Snacks.nvim configuration
   {
     "folke/snacks.nvim",
+    keys = {
+      { "<leader>ff", false }, -- disable default, using fff.nvim instead
+    },
     ---@type snacks.Config
     opts = {
       animate = {},
