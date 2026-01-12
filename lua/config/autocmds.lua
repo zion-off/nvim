@@ -7,10 +7,14 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- =====================
 -- Auto-save Configuration
 -- =====================
--- Save on InsertLeave and FocusLost (less frequent than every keystroke)
+-- Format and save on InsertLeave and FocusLost
 vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
-  callback = function()
+  callback = function(args)
     if vim.bo.modifiable and not vim.bo.readonly then
+      local ok, conform = pcall(require, "conform")
+      if ok then
+        conform.format({ bufnr = args.buf, async = false, lsp_fallback = true })
+      end
       vim.cmd("silent! update")
     end
   end,
