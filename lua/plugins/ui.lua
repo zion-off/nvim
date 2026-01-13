@@ -16,6 +16,9 @@ return {
     },
     ---@type snacks.Config
     opts = {
+      gitbrowse = {
+        what = "permalink",
+      },
       animate = {},
       picker = {
         sources = {
