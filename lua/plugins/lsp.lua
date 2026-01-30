@@ -14,7 +14,13 @@ return {
       servers = {
         marksman = false,
         pyright = {},
-        ruff = {},
+        ruff = {
+          init_options = {
+            settings = {
+              path = { "ruff" },
+            },
+          },
+        },
         gopls = {
           settings = {
             gopls = {
