@@ -7,15 +7,21 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- =====================
 -- Auto-save Configuration
 -- =====================
--- Format and save on InsertLeave and FocusLost
+-- Format and save on InsertLeave, FocusLost, and BufLeave
+-- checktime runs first on BufLeave to reload external changes before saving
 vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
   callback = function(args)
     if vim.bo.modifiable and not vim.bo.readonly then
-      local ok, conform = pcall(require, "conform")
-      if ok then
-        conform.format({ bufnr = args.buf, async = false, lsp_fallback = true })
+      -- Reload file if changed externally (prevents overwriting after branch switch)
+      vim.cmd("silent! checktime")
+      -- Only save if buffer is still modified after checktime
+      if vim.bo.modified then
+        local ok, conform = pcall(require, "conform")
+        if ok then
+          conform.format({ bufnr = args.buf, async = false, lsp_fallback = true })
+        end
+        vim.cmd("silent! update")
       end
-      vim.cmd("silent! update")
     end
   end,
 })
@@ -160,4 +166,5 @@ vim.api.nvim_create_autocmd('InsertLeave', {
   end,
   desc = 'Ruff: auto-fix (ruff_fix/format/imports) when leaving insert mode',
 })
+
 
