@@ -23,12 +23,12 @@ return {
       picker = {
         sources = {
           explorer = {
-            hidden = false,
-            ignored = false,
+            hidden = true,
+            ignored = true,
           },
           grep = {
-            hidden = false,
-            ignored = false,
+            hidden = true,
+            ignored = true,
             exclude = {
               ".git",
               "node_modules",
@@ -52,8 +52,8 @@ return {
         },
       },
       explorer = {
-        hidden = false,
-        ignored = false,
+        hidden = true,
+        ignored = true,
       },
       terminal = {
         win = {
