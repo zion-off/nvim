@@ -1,4 +1,5 @@
 return {
+
   -- Jellybeans theme
   {
     "metalelf0/jellybeans-nvim",
@@ -22,13 +23,7 @@ return {
       animate = {},
       picker = {
         sources = {
-          explorer = {
-            hidden = true,
-            ignored = true,
-          },
           grep = {
-            hidden = true,
-            ignored = true,
             exclude = {
               ".git",
               "node_modules",
@@ -50,10 +45,6 @@ return {
             },
           },
         },
-      },
-      explorer = {
-        hidden = true,
-        ignored = true,
       },
       terminal = {
         win = {
