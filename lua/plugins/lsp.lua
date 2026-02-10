@@ -135,6 +135,16 @@ return {
         },
         -- TypeScript/JavaScript formatting handled by LazyVim extras
       },
+      formatters = {
+        prettier = {
+          cwd = require("conform.util").root_file({
+            ".prettierignore",
+            ".prettierrc",
+            ".prettierrc.json",
+            "prettier.config.js",
+          }),
+        },
+      },
     },
   },
 
