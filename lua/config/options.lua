@@ -13,6 +13,3 @@ vim.opt.timeoutlen = 400
 
 vim.opt.wrap = true
 vim.opt.breakindent = true
-
--- Load terminal colors
-require("config.colors").setup()
