@@ -1,12 +1,29 @@
 return {
 
-  -- Jellybeans theme
+  -- Jellybeans theme (lazy loaded, available via :colorscheme jellybeans-nvim)
+  -- To revert: set lazy = false, add priority = 1001, and uncomment the config
   {
     "metalelf0/jellybeans-nvim",
     dependencies = { "rktjmp/lush.nvim" },
+    lazy = true,
+    -- config = function()
+    --   vim.cmd("colorscheme jellybeans-nvim")
+    -- end,
+  },
+  {
+    "sainnhe/gruvbox-material",
+    lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd("colorscheme jellybeans-nvim")
+      vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_background = "hard"
+      vim.cmd.colorscheme("gruvbox-material")
+
+      -- Diff highlight overrides
+      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#232e25" })
+      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2e2020", fg = "#5c3535" })
+      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#232830" })
+      vim.api.nvim_set_hl(0, "DiffText", { bg = "#2c3540" })
     end,
   },
   -- Snacks.nvim configuration
@@ -85,39 +102,62 @@ return {
     end,
     opts = {
       fd_extra_args = {
-        "--exclude", ".git",
-        "--exclude", "node_modules",
-        "--exclude", "bower_components",
-        "--exclude", "vendor",
-        "--exclude", "__pycache__",
-        "--exclude", ".pytest_cache",
-        "--exclude", "*.pyc",
-        "--exclude", ".next",
-        "--exclude", ".nuxt",
-        "--exclude", "dist",
-        "--exclude", "build",
-        "--exclude", "out",
-        "--exclude", ".cache",
-        "--exclude", "coverage",
-        "--exclude", "target",
-        "--exclude", ".hg",
-        "--exclude", ".svn",
+        "--exclude",
+        ".git",
+        "--exclude",
+        "node_modules",
+        "--exclude",
+        "bower_components",
+        "--exclude",
+        "vendor",
+        "--exclude",
+        "__pycache__",
+        "--exclude",
+        ".pytest_cache",
+        "--exclude",
+        "*.pyc",
+        "--exclude",
+        ".next",
+        "--exclude",
+        ".nuxt",
+        "--exclude",
+        "dist",
+        "--exclude",
+        "build",
+        "--exclude",
+        "out",
+        "--exclude",
+        ".cache",
+        "--exclude",
+        "coverage",
+        "--exclude",
+        "target",
+        "--exclude",
+        ".hg",
+        "--exclude",
+        ".svn",
       },
     },
     keys = {
       {
         "<leader>ff",
-        function() require("fff").find_files() end,
+        function()
+          require("fff").find_files()
+        end,
         desc = "Find files (fff)",
       },
       {
         "<leader>fF",
-        function() require("fff").find_in_git_root() end,
+        function()
+          require("fff").find_in_git_root()
+        end,
         desc = "Find files in git root (fff)",
       },
       {
         "<leader><space>",
-        function() require("fff").find_files() end,
+        function()
+          require("fff").find_files()
+        end,
         desc = "Find files (fff)",
       },
     },
