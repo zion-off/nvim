@@ -8,6 +8,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
+      picker = "telescope",
       enable_builtin = true,
       default_to_projects_v2 = false,
       default_merge_method = "squash",
