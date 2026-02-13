@@ -1,23 +1,28 @@
 return {
 
-  -- Jellybeans theme (lazy loaded, available via :colorscheme jellybeans-nvim)
-  -- To revert: set lazy = false, add priority = 1001, and uncomment the config
+  -- Colorschemes: set lazy = false and priority = 1000 on the active one
   {
     "metalelf0/jellybeans-nvim",
     dependencies = { "rktjmp/lush.nvim" },
     lazy = true,
-    -- config = function()
-    --   vim.cmd("colorscheme jellybeans-nvim")
-    -- end,
   },
   {
     "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_enable_italic = false
       vim.g.gruvbox_material_background = "hard"
       vim.cmd.colorscheme("gruvbox-material")
+
+      -- Strip italic from all highlight groups
+      -- for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
+      --   local hl = vim.api.nvim_get_hl(0, { name = group })
+      --   if hl.italic then
+      --     hl.italic = nil
+      --     vim.api.nvim_set_hl(0, group, hl --[[@as vim.api.keyset.highlight]])
+      --   end
+      -- end
 
       -- Diff highlight overrides
       vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#232e25" })
