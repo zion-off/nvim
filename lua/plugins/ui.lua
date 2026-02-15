@@ -24,6 +24,9 @@ return {
       --   end
       -- end
 
+      -- Clear active parameter highlighting in signature help
+      vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bold = true })
+
       -- Diff highlight overrides
       vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#232e25" })
       vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2e2020", fg = "#5c3535" })
