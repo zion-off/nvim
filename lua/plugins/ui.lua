@@ -90,11 +90,11 @@ return {
     config = function()
       require("scrollbar").setup({
         marks = {
-          Error = { text = { "█" } },
-          Warn = { text = { "█" } },
-          Info = { text = { "█" } },
-          Hint = { text = { "█" } },
-          Misc = { text = { "█" } },
+          Error = { text = { "█" }, color = "#ea6962" },
+          Warn = { text = { "█" }, color = "#d8a657" },
+          Info = { text = { "█" }, color = "#7daea3" },
+          Hint = { text = { "█" }, color = "#a9b665" },
+          Misc = { text = { "█" }, color = "#d3869b" },
         },
       })
     end,
