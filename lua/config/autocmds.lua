@@ -53,13 +53,34 @@ local function set_window_highlights()
   vim.api.nvim_set_hl(0, "InactiveWindow", { bg = normal_hl.bg })
 end
 
+local function set_cursor_highlights()
+  local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
+  if normal_hl.bg then
+    local bg = normal_hl.bg
+    local r = math.floor(bg / 65536)
+    local g = math.floor((bg % 65536) / 256)
+    local b = bg % 256
+    -- Lighten slightly to make the crosshair visible
+    local factor = 1.3
+    r = math.min(255, math.floor(r * factor))
+    g = math.min(255, math.floor(g * factor))
+    b = math.min(255, math.floor(b * factor))
+    local highlight_bg = r * 65536 + g * 256 + b
+    vim.api.nvim_set_hl(0, "CursorColumn", { bg = highlight_bg })
+  end
+end
+
 -- Apply highlights on colorscheme change
 vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = set_window_highlights,
+  callback = function()
+    set_window_highlights()
+    set_cursor_highlights()
+  end,
 })
 
 -- Set initial highlight groups
 set_window_highlights()
+set_cursor_highlights()
 
 -- Apply window highlighting on focus change
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
@@ -82,7 +103,6 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 
-
 -- =====================
 -- Terminal Configuration
 -- =====================
@@ -104,18 +124,18 @@ vim.api.nvim_create_autocmd("TermOpen", {
 -- =====================
 -- Disable Ruff hover in favor of Pyright
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+  group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client == nil then
       return
     end
-    if client.name == 'ruff' then
+    if client.name == "ruff" then
       -- Disable hover in favor of Pyright
       client.server_capabilities.hoverProvider = false
     end
   end,
-  desc = 'LSP: Disable hover capability from Ruff',
+  desc = "LSP: Disable hover capability from Ruff",
 })
 
 -- =====================
@@ -132,7 +152,7 @@ local function ruff_auto_fix(bufnr)
   if not vim.g.ruff_auto_fix_insertleave then
     return
   end
-  if vim.bo[bufnr].filetype ~= 'python' then
+  if vim.bo[bufnr].filetype ~= "python" then
     return
   end
   -- Only run if buffer is modifiable and not read-only
@@ -146,7 +166,7 @@ local function ruff_auto_fix(bufnr)
   ruff_last_fix = now
 
   -- Prefer Conform since it's configured with ruff_fix, ruff_format, ruff_organize_imports
-  local ok_conform, conform = pcall(require, 'conform')
+  local ok_conform, conform = pcall(require, "conform")
   if ok_conform then
     conform.format({ async = true, lsp_fallback = true, bufnr = bufnr })
     return
@@ -154,17 +174,15 @@ local function ruff_auto_fix(bufnr)
 
   -- Fallback: try LSP code action 'source.fixAll.ruff'
   local params = {
-    context = { only = { 'source.fixAll.ruff' } },
+    context = { only = { "source.fixAll.ruff" } },
   }
   vim.lsp.buf.code_action(params)
 end
 
-vim.api.nvim_create_autocmd('InsertLeave', {
-  pattern = '*.py',
+vim.api.nvim_create_autocmd("InsertLeave", {
+  pattern = "*.py",
   callback = function(args)
     ruff_auto_fix(args.buf)
   end,
-  desc = 'Ruff: auto-fix (ruff_fix/format/imports) when leaving insert mode',
+  desc = "Ruff: auto-fix (ruff_fix/format/imports) when leaving insert mode",
 })
-
-
