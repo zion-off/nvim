@@ -1,39 +1,67 @@
-return {
+-- Change this one value to switch the startup colorscheme
+local active_theme = "gruvbox-material"
 
-  -- Colorschemes: set lazy = false and priority = 1000 on the active one
+-- Each theme: { repo, colorscheme, opts, setup(optional) }
+-- setup() runs before colorscheme is applied; config() runs after.
+local themes = {
   {
-    "metalelf0/jellybeans-nvim",
-    dependencies = { "rktjmp/lush.nvim" },
-    lazy = true,
+    repo = "casedami/neomodern.nvim",
+    colorscheme = "roseprime",
+    opts = { opts = {} },
   },
   {
-    "sainnhe/gruvbox-material",
-    lazy = false,
-    priority = 1000,
-    config = function()
+    repo = "rebelot/kanagawa.nvim",
+    colorscheme = "kanagawa-dragon",
+  },
+  {
+    repo = "wtfox/jellybeans.nvim",
+    colorscheme = "jellybeans",
+    opts = { opts = {} },
+  },
+  {
+    repo = "sainnhe/gruvbox-material",
+    colorscheme = "gruvbox-material",
+    setup = function()
       vim.g.gruvbox_material_enable_italic = false
       vim.g.gruvbox_material_background = "hard"
-      vim.cmd.colorscheme("gruvbox-material")
-
-      -- Strip italic from all highlight groups
-      -- for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
-      --   local hl = vim.api.nvim_get_hl(0, { name = group })
-      --   if hl.italic then
-      --     hl.italic = nil
-      --     vim.api.nvim_set_hl(0, group, hl --[[@as vim.api.keyset.highlight]])
-      --   end
-      -- end
-
-      -- Clear active parameter highlighting in signature help
+    end,
+    config = function()
       vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bold = true })
-
-      -- Diff highlight overrides
       vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#232e25" })
-      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2e2020", fg = "#5c3535" })
+      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2e2020" })
       vim.api.nvim_set_hl(0, "DiffChange", { bg = "#232830" })
       vim.api.nvim_set_hl(0, "DiffText", { bg = "#2c3540" })
     end,
   },
+}
+
+local function build_theme_specs()
+  local specs = {}
+  for _, theme in ipairs(themes) do
+    local is_active = theme.colorscheme == active_theme
+    local spec = vim.tbl_deep_extend("force", {
+      theme.repo,
+      lazy = not is_active,
+      priority = is_active and 1000 or nil,
+      config = is_active and function()
+        if theme.setup then
+          theme.setup()
+        end
+        vim.cmd.colorscheme(theme.colorscheme)
+        if theme.config then
+          theme.config()
+        end
+      end or nil,
+    }, theme.opts or {})
+    table.insert(specs, spec)
+  end
+  return specs
+end
+
+local specs = build_theme_specs()
+
+-- Append non-theme plugins
+vim.list_extend(specs, {
   -- Snacks.nvim configuration
   {
     "folke/snacks.nvim",
@@ -102,72 +130,6 @@ return {
       })
     end,
   },
+})
 
-  {
-    "dmtrKovalenko/fff.nvim",
-    build = function()
-      require("fff.download").download_or_build_binary()
-    end,
-    opts = {
-      fd_extra_args = {
-        "--exclude",
-        ".git",
-        "--exclude",
-        "node_modules",
-        "--exclude",
-        "bower_components",
-        "--exclude",
-        "vendor",
-        "--exclude",
-        "__pycache__",
-        "--exclude",
-        ".pytest_cache",
-        "--exclude",
-        "*.pyc",
-        "--exclude",
-        ".next",
-        "--exclude",
-        ".nuxt",
-        "--exclude",
-        "dist",
-        "--exclude",
-        "build",
-        "--exclude",
-        "out",
-        "--exclude",
-        ".cache",
-        "--exclude",
-        "coverage",
-        "--exclude",
-        "target",
-        "--exclude",
-        ".hg",
-        "--exclude",
-        ".svn",
-      },
-    },
-    keys = {
-      {
-        "<leader>ff",
-        function()
-          require("fff").find_files()
-        end,
-        desc = "Find files (fff)",
-      },
-      {
-        "<leader>fF",
-        function()
-          require("fff").find_in_git_root()
-        end,
-        desc = "Find files in git root (fff)",
-      },
-      {
-        "<leader><space>",
-        function()
-          require("fff").find_files()
-        end,
-        desc = "Find files (fff)",
-      },
-    },
-  },
-}
+return specs
