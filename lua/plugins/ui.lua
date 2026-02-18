@@ -1,5 +1,5 @@
 -- Change this one value to switch the startup colorscheme
-local active_theme = "gruvbox-material"
+local active_theme = "kanagawa-dragon"
 
 -- Each theme: { repo, colorscheme, opts, setup(optional) }
 -- setup() runs before colorscheme is applied; config() runs after.
