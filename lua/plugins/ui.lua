@@ -1,5 +1,5 @@
 -- Change this one value to switch the startup colorscheme
-local active_theme = "kanagawa-dragon"
+local active_theme = "jellybeans-muted"
 
 -- Each theme: { repo, colorscheme, opts, setup(optional) }
 -- setup() runs before colorscheme is applied; config() runs after.
@@ -27,6 +27,7 @@ local themes = {
     colorscheme = "jellybeans-muted",
     opts = { opts = {} },
     config = function()
+      -- Apply kanagawa-dragon background color
       vim.api.nvim_set_hl(0, "Normal", { bg = "#181616" })
 
       -- For floating windows, preserve fg but set bg
