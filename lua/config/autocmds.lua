@@ -54,20 +54,10 @@ local function set_window_highlights()
 end
 
 local function set_cursor_highlights()
-  local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
-  if normal_hl.bg then
-    local bg = normal_hl.bg
-    local r = math.floor(bg / 65536)
-    local g = math.floor((bg % 65536) / 256)
-    local b = bg % 256
-    -- Lighten slightly to make the crosshair visible
-    local factor = 1.3
-    r = math.min(255, math.floor(r * factor))
-    g = math.min(255, math.floor(g * factor))
-    b = math.min(255, math.floor(b * factor))
-    local highlight_bg = r * 65536 + g * 256 + b
-    vim.api.nvim_set_hl(0, "CursorColumn", { bg = highlight_bg })
-  end
+  vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
+  -- Lighten the cursor block itself
+  vim.api.nvim_set_hl(0, "Cursor", { bg = "#a0a0a0", fg = "#000000" })
+  vim.opt.guicursor:append("a:Cursor/lCursor")
 end
 
 -- Apply highlights on colorscheme change
