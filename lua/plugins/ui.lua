@@ -24,8 +24,35 @@ local themes = {
   },
   {
     repo = "wtfox/jellybeans.nvim",
-    colorscheme = "jellybeans",
+    colorscheme = "jellybeans-muted",
     opts = { opts = {} },
+    config = function()
+      vim.api.nvim_set_hl(0, "Normal", { bg = "#181616" })
+
+      -- For floating windows, preserve fg but set bg
+      local float_groups = {
+        "NormalFloat",
+        "FloatBorder",
+        "SnacksPickerBorder",
+        "SnacksPickerList",
+        "SnacksPickerPreview",
+        "SnacksPickerInput",
+        "SnacksPickerPrompt",
+      }
+      for _, group in ipairs(float_groups) do
+        local hl = vim.api.nvim_get_hl(0, { name = group })
+        if hl.fg then
+          vim.api.nvim_set_hl(0, group, { fg = hl.fg, bg = "#181616" })
+        else
+          vim.api.nvim_set_hl(0, group, { bg = "#181616" })
+        end
+      end
+
+      -- For titles, link to Normal to avoid blue backgrounds
+      vim.api.nvim_set_hl(0, "FloatTitle", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "SnacksPickerTitle", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "SnacksPickerBoxTitle", { link = "Normal" })
+    end,
   },
   {
     repo = "sainnhe/gruvbox-material",
