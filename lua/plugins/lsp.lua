@@ -86,6 +86,7 @@ return {
   -- Treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
+    commit = "2bd9b9b4f12eed175fba35ca2db8e8584546a4ec",
     opts = {
       ensure_installed = {
         "bash",
