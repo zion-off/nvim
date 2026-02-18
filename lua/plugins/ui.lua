@@ -12,6 +12,15 @@ local themes = {
   {
     repo = "rebelot/kanagawa.nvim",
     colorscheme = "kanagawa-dragon",
+    config = function()
+      -- Disable italics globally
+      for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
+        local hl = vim.api.nvim_get_hl(0, { name = group })
+        if hl.italic == true then
+          vim.api.nvim_set_hl(0, group, vim.tbl_extend("force", hl, { italic = false }))
+        end
+      end
+    end,
   },
   {
     repo = "wtfox/jellybeans.nvim",
