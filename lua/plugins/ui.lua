@@ -53,6 +53,9 @@ local themes = {
       vim.api.nvim_set_hl(0, "FloatTitle", { link = "Normal" })
       vim.api.nvim_set_hl(0, "SnacksPickerTitle", { link = "Normal" })
       vim.api.nvim_set_hl(0, "SnacksPickerBoxTitle", { link = "Normal" })
+
+      -- Bufferline active buffer: bold, bright filename
+      vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bold = true, fg = "#f5edd6", bg = "#2e2929" })
     end,
   },
   {
