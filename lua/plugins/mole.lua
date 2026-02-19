@@ -1,4 +1,4 @@
-local use_local = vim.env.LOCAL_MOLE_NVIM or os.getenv("LOCAL_MOLE_NVIM")
+local use_local = vim.env.DEV_PLUGINS or os.getenv("DEV_PLUGINS")
 
 local plugin_spec = {
   dependencies = { "MunifTanjim/nui.nvim" },

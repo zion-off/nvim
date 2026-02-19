@@ -1,21 +1,4 @@
 return {
-  -- GitHub integration
-  {
-    "pwntester/octo.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = {
-      picker = "telescope",
-      use_local_fs = true,
-      enable_builtin = true,
-      default_to_projects_v2 = false,
-      default_merge_method = "rebase",
-      gh_cmd = "/opt/homebrew/bin/gh",
-    },
-  },
   -- LazyGit integration
   {
     "kdheepak/lazygit.nvim",
