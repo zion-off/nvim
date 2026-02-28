@@ -1,5 +1,5 @@
 -- Change this one value to switch the startup colorscheme
-local active_theme = "jellybeans-muted"
+local active_theme = "jellybeans"
 
 -- Each theme: { repo, colorscheme, opts, setup(optional) }
 -- setup() runs before colorscheme is applied; config() runs after.
@@ -24,38 +24,13 @@ local themes = {
   },
   {
     repo = "wtfox/jellybeans.nvim",
-    colorscheme = "jellybeans-muted",
-    opts = { opts = {} },
-    config = function()
-      -- Apply kanagawa-dragon background color
-      vim.api.nvim_set_hl(0, "Normal", { bg = "#181616" })
-
-      -- For floating windows, preserve fg but set bg
-      local float_groups = {
-        "NormalFloat",
-        "FloatBorder",
-        "SnacksPickerBorder",
-        "SnacksPickerList",
-        "SnacksPickerPreview",
-        "SnacksPickerInput",
-        "SnacksPickerPrompt",
-      }
-      for _, group in ipairs(float_groups) do
-        local hl = vim.api.nvim_get_hl(0, { name = group })
-        if hl.fg then
-          vim.api.nvim_set_hl(0, group, { fg = hl.fg, bg = "#181616" })
-        else
-          vim.api.nvim_set_hl(0, group, { bg = "#181616" })
-        end
-      end
-
-      -- For titles, link to Normal to avoid blue backgrounds
-      vim.api.nvim_set_hl(0, "FloatTitle", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "SnacksPickerTitle", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "SnacksPickerBoxTitle", { link = "Normal" })
-
-      -- Bufferline active buffer: bold, bright filename
-      vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bold = true, fg = "#f5edd6", bg = "#2e2929" })
+    colorscheme = "jellybeans",
+    setup = function()
+      require("jellybeans").setup({
+        on_colors = function(colors)
+          colors.background = "#1c1c1c"
+        end,
+      })
     end,
   },
   {
@@ -79,20 +54,24 @@ local function build_theme_specs()
   local specs = {}
   for _, theme in ipairs(themes) do
     local is_active = theme.colorscheme == active_theme
-    local spec = vim.tbl_deep_extend("force", {
-      theme.repo,
-      lazy = not is_active,
-      priority = is_active and 1000 or nil,
-      config = is_active and function()
-        if theme.setup then
-          theme.setup()
-        end
-        vim.cmd.colorscheme(theme.colorscheme)
-        if theme.config then
-          theme.config()
-        end
-      end or nil,
-    }, theme.opts or {})
+    local base = theme.dir and { dir = theme.dir } or { theme.repo }
+    local spec = vim.tbl_deep_extend(
+      "force",
+      vim.tbl_extend("force", base, {
+        lazy = not is_active,
+        priority = is_active and 1000 or nil,
+        config = is_active and function()
+          if theme.setup then
+            theme.setup()
+          end
+          vim.cmd.colorscheme(theme.colorscheme)
+          if theme.config then
+            theme.config()
+          end
+        end or nil,
+      }),
+      theme.opts or {}
+    )
     table.insert(specs, spec)
   end
   return specs
