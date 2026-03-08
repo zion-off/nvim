@@ -6,6 +6,7 @@ return {
   ---@type snacks.Config
   opts = {
     gitbrowse = {
+      -- "repo" | "branch" | "file" | "commit" | "permalink"
       what = "permalink",
     },
     animate = {},
