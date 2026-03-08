@@ -4,6 +4,7 @@ local plugin_spec = {
   dependencies = { "MunifTanjim/nui.nvim" },
   opts = {
     picker = "snacks",
+    virtual_text = true,
   },
 }
 
