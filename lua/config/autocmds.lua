@@ -55,8 +55,6 @@ end
 
 local function set_cursor_highlights()
   vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
-  -- Lighten the cursor block itself
-  vim.api.nvim_set_hl(0, "Cursor", { bg = "#a0a0a0", fg = "#000000" })
   vim.opt.guicursor:append("a:Cursor/lCursor")
 end
 
