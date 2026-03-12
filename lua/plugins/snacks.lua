@@ -41,6 +41,11 @@ return {
         width = 0.3,
       },
     },
-    scroll = {},
+    scroll = {
+      animate = {
+        duration = { step = 10, total = 100 },
+        easing = "linear",
+      },
+    },
   },
 }
