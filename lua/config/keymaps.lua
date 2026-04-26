@@ -31,3 +31,29 @@ vim.keymap.set("n", "<leader>fT", ":terminal<CR>", { desc = "Terminal (current b
 
 -- Exit terminal mode with Escape
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+local function relative_path()
+  local abs = vim.fn.expand("%:p")
+  local cwd = vim.g.launch_cwd or vim.fn.getcwd()
+  if abs:sub(1, #cwd) == cwd then
+    return abs:sub(#cwd + 1)
+  end
+  return abs
+end
+
+-- Copy buffer path
+vim.keymap.set("n", "<leader>yp", function()
+  local path = relative_path()
+  vim.fn.setreg("+", path)
+  vim.notify("Copied: " .. path)
+end, { desc = "Copy path" })
+
+vim.keymap.set("v", "<leader>yp", function()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
+  local path = relative_path()
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  local text = path .. "#L" .. start_line .. "-L" .. end_line
+  vim.fn.setreg("+", text)
+  vim.notify("Copied: " .. text)
+end, { desc = "Copy path with line range" })
