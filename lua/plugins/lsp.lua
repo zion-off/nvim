@@ -131,12 +131,13 @@ return {
           "ruff_fix",
           -- To run the Ruff formatter.
           "ruff_format",
-          -- To organize the imports.
-          "ruff_organize_imports",
         },
         -- TypeScript/JavaScript formatting handled by LazyVim extras
       },
       formatters = {
+        ruff_fix = {
+          args = { "check", "--fix", "--unfixable=F401", "--force-exclude", "--exit-zero", "--no-cache", "-" },
+        },
         prettier = {
           cwd = require("conform.util").root_file({
             ".prettierignore",
