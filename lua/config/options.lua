@@ -7,6 +7,7 @@
 -- =====================
 -- Disable AI suggestions in the completion menu; use inline ghost text (Copilot) instead
 vim.g.ai_cmp = false
+vim.opt.spell = false
 
 -- =====================
 -- Appearance
