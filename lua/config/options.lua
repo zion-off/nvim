@@ -5,13 +5,11 @@
 -- Disable AI in completion menu, use inline ghost text instead
 vim.g.ai_cmp = false
 vim.opt.spell = false
-vim.opt.autowriteall = true -- Auto-save files
 vim.opt.background = "dark"
 
 -- Increase timeout for which-key to prevent space key issues
 vim.opt.timeoutlen = 400
 
 vim.opt.pumblend = 0
-vim.opt.cursorcolumn = true
 vim.opt.wrap = true
 vim.opt.breakindent = true

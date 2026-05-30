@@ -7,21 +7,45 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- =====================
 -- Auto-save Configuration
 -- =====================
--- Format and save on InsertLeave, FocusLost, and BufLeave
--- checktime runs first on BufLeave to reload external changes before saving
+-- Auto-save on InsertLeave, FocusLost, and BufLeave.
+-- The write happens immediately WITHOUT blocking on a formatter; formatting
+-- then runs asynchronously and the buffer is re-saved when it completes.
+-- checktime runs first to reload external changes before saving.
+
+-- Save a buffer without triggering LazyVim's synchronous format-on-save.
+-- (We handle formatting ourselves, asynchronously, below.)
+local function save_without_format(buf)
+  local prev = vim.b[buf].autoformat
+  vim.b[buf].autoformat = false
+  vim.api.nvim_buf_call(buf, function()
+    vim.cmd("silent! update")
+  end)
+  vim.b[buf].autoformat = prev
+end
+
 vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
   callback = function(args)
-    if vim.bo.modifiable and not vim.bo.readonly then
-      -- Reload file if changed externally (prevents overwriting after branch switch)
-      vim.cmd("silent! checktime")
-      -- Only save if buffer is still modified after checktime
-      if vim.bo.modified then
-        local ok, conform = pcall(require, "conform")
-        if ok then
-          conform.format({ bufnr = args.buf, async = false, lsp_fallback = true })
+    local buf = args.buf
+    if not (vim.bo[buf].modifiable and not vim.bo[buf].readonly) then
+      return
+    end
+    -- Reload file if changed externally (prevents overwriting after branch switch)
+    vim.cmd("silent! checktime")
+    if not vim.bo[buf].modified then
+      return
+    end
+
+    -- 1) Save immediately so the file is never left unsaved (non-blocking).
+    save_without_format(buf)
+
+    -- 2) Format asynchronously, then re-save if formatting changed anything.
+    local ok, conform = pcall(require, "conform")
+    if ok then
+      conform.format({ bufnr = buf, async = true, lsp_format = "fallback" }, function(err)
+        if not err and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].modified then
+          save_without_format(buf)
         end
-        vim.cmd("silent! update")
-      end
+      end)
     end
   end,
 })
@@ -54,8 +78,11 @@ local function set_window_highlights()
 end
 
 local function set_cursor_highlights()
-  vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
-  vim.opt.guicursor:append("a:Cursor/lCursor")
+  -- Idempotent: ColorScheme fires repeatedly, and :append is not deduped,
+  -- so guard against stacking duplicate guicursor entries over a session.
+  if not vim.o.guicursor:find("a:Cursor/lCursor", 1, true) then
+    vim.opt.guicursor:append("a:Cursor/lCursor")
+  end
 end
 
 -- Apply highlights on colorscheme change
@@ -70,24 +97,28 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 set_window_highlights()
 set_cursor_highlights()
 
--- Apply window highlighting on focus change
+-- Apply window highlighting on focus change.
+-- Only write winhl when it actually changes; setting it unconditionally forces
+-- a full-window redraw on every focus event, which causes flicker/churn.
+local function set_winhl(value)
+  -- Skip diff windows to preserve diff highlighting
+  if vim.wo.diff then
+    return
+  end
+  if vim.wo.winhl ~= value then
+    vim.wo.winhl = value
+  end
+end
+
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
   callback = function()
-    -- Skip diff windows to preserve diff highlighting
-    if vim.wo.diff then
-      return
-    end
-    vim.wo.winhl = "Normal:ActiveWindow"
+    set_winhl("Normal:ActiveWindow")
   end,
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
   callback = function()
-    -- Skip diff windows to preserve diff highlighting
-    if vim.wo.diff then
-      return
-    end
-    vim.wo.winhl = "Normal:InactiveWindow"
+    set_winhl("Normal:InactiveWindow")
   end,
 })
 
@@ -124,53 +155,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
   desc = "LSP: Disable hover capability from Ruff",
-})
-
--- =====================
--- Ruff Auto-fix on InsertLeave (Python)
--- =====================
--- Toggle: set vim.g.ruff_auto_fix_insertleave = false in your init.lua to disable.
-vim.g.ruff_auto_fix_insertleave = vim.g.ruff_auto_fix_insertleave ~= false
-
--- Throttle to avoid multiple quick triggers when leaving Insert mode repeatedly
-local ruff_last_fix = 0
-local RUFF_FIX_DEBOUNCE_MS = 800
-
-local function ruff_auto_fix(bufnr)
-  if not vim.g.ruff_auto_fix_insertleave then
-    return
-  end
-  if vim.bo[bufnr].filetype ~= "python" then
-    return
-  end
-  -- Only run if buffer is modifiable and not read-only
-  if not (vim.bo[bufnr].modifiable and not vim.bo[bufnr].readonly) then
-    return
-  end
-  local now = vim.loop.hrtime() / 1e6
-  if (now - ruff_last_fix) < RUFF_FIX_DEBOUNCE_MS then
-    return
-  end
-  ruff_last_fix = now
-
-  -- Prefer Conform since it's configured with ruff_fix, ruff_format, ruff_organize_imports
-  local ok_conform, conform = pcall(require, "conform")
-  if ok_conform then
-    conform.format({ async = true, lsp_fallback = true, bufnr = bufnr })
-    return
-  end
-
-  -- Fallback: try LSP code action 'source.fixAll.ruff'
-  local params = {
-    context = { only = { "source.fixAll.ruff" } },
-  }
-  vim.lsp.buf.code_action(params)
-end
-
-vim.api.nvim_create_autocmd("InsertLeave", {
-  pattern = "*.py",
-  callback = function(args)
-    ruff_auto_fix(args.buf)
-  end,
-  desc = "Ruff: auto-fix (ruff_fix/format/imports) when leaving insert mode",
 })
