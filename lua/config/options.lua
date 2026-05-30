@@ -11,6 +11,7 @@ vim.opt.background = "dark"
 -- Increase timeout for which-key to prevent space key issues
 vim.opt.timeoutlen = 400
 
+vim.opt.pumblend = 0
 vim.opt.cursorcolumn = true
 vim.opt.wrap = true
 vim.opt.breakindent = true

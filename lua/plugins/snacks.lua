@@ -9,7 +9,7 @@ return {
       -- "repo" | "branch" | "file" | "commit" | "permalink"
       what = "permalink",
     },
-    animate = {},
+    animate = { enabled = false },
     picker = {
       sources = {
         grep = {
