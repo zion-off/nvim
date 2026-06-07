@@ -1,6 +1,5 @@
 return {
-  dir = "/Users/atibjawad.zion/projects/diff",
-  name = "diff.nvim",
+  "zion-off/diff",
   lazy = false,
   config = function()
     require("diff").setup()
