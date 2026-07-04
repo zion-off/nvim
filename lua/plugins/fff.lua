@@ -1,6 +1,6 @@
 return {
   "dmtrKovalenko/fff.nvim",
-  commit = "434344f6e94ac8596fd6323ea653c05900c9affa",
+  commit = "1cd8d31da4c1536be11c4dae0ed61d066e05e87f",
   build = function()
     require("fff.download").download_or_build_binary()
   end,
