@@ -7,6 +7,7 @@ return {
     },
   },
 
+  -- LSP servers
   {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
@@ -14,6 +15,7 @@ return {
       servers = {
         marksman = false,
         pyright = {},
+        tailwindcss = {},
         ruff = {
           init_options = {
             settings = {

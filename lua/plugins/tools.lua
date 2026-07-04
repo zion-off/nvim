@@ -1,4 +1,7 @@
 return {
+  -- Copilot inline suggestions
+  { "github/copilot.vim" },
+
   -- LazyGit integration
   {
     "kdheepak/lazygit.nvim",
