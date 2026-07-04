@@ -6,6 +6,7 @@ return {
     priority = 1000,
     config = function()
       require("jellybeans").setup({
+        flat_ui = false,
         on_colors = function(colors)
           colors.background = "#1c1c1c"
         end,
