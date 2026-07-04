@@ -1,86 +1,18 @@
--- Change this one value to switch the startup colorscheme
-local active_theme = "jellybeans"
-
--- Each theme: { repo, colorscheme, opts, setup(optional) }
--- setup() runs before colorscheme is applied; config() runs after.
-local themes = {
+return {
+  -- Colorscheme
   {
-    repo = "casedami/neomodern.nvim",
-    colorscheme = "roseprime",
-    opts = { opts = {} },
-  },
-  {
-    repo = "rebelot/kanagawa.nvim",
-    colorscheme = "kanagawa-dragon",
+    "wtfox/jellybeans.nvim",
+    lazy = false,
+    priority = 1000,
     config = function()
-      -- Disable italics globally
-      for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
-        local hl = vim.api.nvim_get_hl(0, { name = group })
-        if hl.italic == true then
-          vim.api.nvim_set_hl(0, group, vim.tbl_extend("force", hl, { italic = false }))
-        end
-      end
-    end,
-  },
-  {
-    repo = "wtfox/jellybeans.nvim",
-    colorscheme = "jellybeans",
-    setup = function()
       require("jellybeans").setup({
         on_colors = function(colors)
           colors.background = "#1c1c1c"
         end,
       })
+      vim.cmd.colorscheme("jellybeans")
     end,
   },
-  {
-    repo = "sainnhe/gruvbox-material",
-    colorscheme = "gruvbox-material",
-    setup = function()
-      vim.g.gruvbox_material_enable_italic = false
-      vim.g.gruvbox_material_background = "hard"
-    end,
-    config = function()
-      vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bold = true })
-      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#232e25" })
-      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2e2020" })
-      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#232830" })
-      vim.api.nvim_set_hl(0, "DiffText", { bg = "#2c3540" })
-    end,
-  },
-}
-
-local function build_theme_specs()
-  local specs = {}
-  for _, theme in ipairs(themes) do
-    local is_active = theme.colorscheme == active_theme
-    local base = theme.dir and { dir = theme.dir } or { theme.repo }
-    local spec = vim.tbl_deep_extend(
-      "force",
-      vim.tbl_extend("force", base, {
-        lazy = not is_active,
-        priority = is_active and 1000 or nil,
-        config = is_active and function()
-          if theme.setup then
-            theme.setup()
-          end
-          vim.cmd.colorscheme(theme.colorscheme)
-          if theme.config then
-            theme.config()
-          end
-        end or nil,
-      }),
-      theme.opts or {}
-    )
-    table.insert(specs, spec)
-  end
-  return specs
-end
-
-local specs = build_theme_specs()
-
--- Append non-theme plugins
-vim.list_extend(specs, {
 
   -- Material icons
   {
@@ -103,6 +35,4 @@ vim.list_extend(specs, {
       })
     end,
   },
-})
-
-return specs
+}
