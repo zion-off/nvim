@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
 
     save_without_format(buf)
   end,
+  desc = "Format and save buffer on InsertLeave/FocusLost/BufLeave",
 })
 
 -- =====================
@@ -89,6 +90,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     set_window_highlights()
     set_cursor_highlights()
   end,
+  desc = "Reapply window dim and cursor highlights on colorscheme change",
 })
 
 -- Set initial highlight groups
@@ -112,12 +114,14 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
   callback = function()
     set_winhl("Normal:ActiveWindow")
   end,
+  desc = "Highlight the active window",
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
   callback = function()
     set_winhl("Normal:InactiveWindow")
   end,
+  desc = "Dim the inactive window",
 })
 
 -- =====================
@@ -134,6 +138,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
   end,
+  desc = "Hide line numbers in terminal buffers",
 })
 
 -- =====================

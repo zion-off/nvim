@@ -1,8 +1,10 @@
 -- Keymaps are automatically loaded on the VeryLazy event
--- 
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- =====================
+-- Shell
+-- =====================
 -- Execute shell command silently
 vim.keymap.set("n", "<leader>xs", function()
   local cmd = vim.fn.input("Command: ")
@@ -11,15 +13,24 @@ vim.keymap.set("n", "<leader>xs", function()
   end
 end, { desc = "Execute shell command" })
 
+-- =====================
+-- Claude Code
+-- =====================
 vim.keymap.set("n", "<leader>ac", ":ClaudeCode<CR>", { desc = "Toggle Claude Code" })
 vim.keymap.set("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send to Claude" })
 vim.keymap.set("n", "<leader>ay", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept diff" })
 vim.keymap.set("n", "<leader>an", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
 
+-- =====================
+-- Buffer/Tab Navigation
+-- =====================
 vim.keymap.set("n", "<leader>bp", ":BufferLineMovePrev<CR>", { desc = "Move buffer left" })
 vim.keymap.set("n", "<leader>bn", ":BufferLineMoveNext<CR>", { desc = "Move buffer right" })
 
--- Override terminal keybindings
+-- =====================
+-- Terminal
+-- =====================
+-- Open a terminal in the project root (git root if available, else cwd)
 vim.keymap.set("n", "<leader>ft", function()
   local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
   local target_dir = (vim.v.shell_error == 0 and git_root ~= "") and git_root or vim.fn.getcwd()
@@ -32,6 +43,9 @@ vim.keymap.set("n", "<leader>fT", ":terminal<CR>", { desc = "Terminal (current b
 -- Exit terminal mode with Escape
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
+-- =====================
+-- Path Yanking
+-- =====================
 local function relative_path()
   local abs = vim.fn.expand("%:p")
   local cwd = vim.g.launch_cwd or vim.fn.getcwd()
