@@ -8,12 +8,15 @@ pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 -- Auto-save Configuration
 -- =====================
 -- Auto-save on InsertLeave, FocusLost, and BufLeave.
--- The write happens immediately WITHOUT blocking on a formatter; formatting
--- then runs asynchronously and the buffer is re-saved when it completes.
+-- Formatting runs synchronously but with a short, bounded timeout: conform
+-- kills the formatter process if it exceeds the timeout, so no formatter job
+-- is ever left running in the background. (An earlier async version had no
+-- such timeout, so a slow/hung formatter job could linger and block Neovim
+-- from exiting on :wqall.)
 -- checktime runs first to reload external changes before saving.
 
 -- Save a buffer without triggering LazyVim's synchronous format-on-save.
--- (We handle formatting ourselves, asynchronously, below.)
+-- (We handle formatting ourselves below.)
 local function save_without_format(buf)
   local prev = vim.b[buf].autoformat
   vim.b[buf].autoformat = false
@@ -35,18 +38,13 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
       return
     end
 
-    -- 1) Save immediately so the file is never left unsaved (non-blocking).
-    save_without_format(buf)
-
-    -- 2) Format asynchronously, then re-save if formatting changed anything.
+    -- Format first (bounded by timeout_ms), then save once.
     local ok, conform = pcall(require, "conform")
     if ok then
-      conform.format({ bufnr = buf, async = true, lsp_format = "fallback" }, function(err)
-        if not err and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].modified then
-          save_without_format(buf)
-        end
-      end)
+      conform.format({ bufnr = buf, timeout_ms = 500, lsp_format = "fallback" })
     end
+
+    save_without_format(buf)
   end,
 })
 
