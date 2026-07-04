@@ -138,7 +138,7 @@ return {
       },
       formatters = {
         ruff_fix = {
-          args = { "check", "--fix", "--unfixable=F401", "--force-exclude", "--exit-zero", "--no-cache", "-" },
+          args = { "check", "--fix", "--unfixable=F401", "--force-exclude", "--exit-zero", "-" },
         },
         prettier = {
           cwd = require("conform.util").root_file({

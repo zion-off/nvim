@@ -26,7 +26,13 @@ local function save_without_format(buf)
   vim.b[buf].autoformat = prev
 end
 
-vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost", "BufLeave" }, {
+-- InsertLeave is intentionally excluded: it fires on every <Esc> and collides
+-- with Neovim's pull-diagnostic request (textDocument/diagnostic). The async
+-- formatter's edits land on top of that in-flight pull and cancel it, so freshly
+-- computed diagnostics get discarded before they render. Saving/formatting only
+-- when leaving the buffer or losing focus avoids the storm; a cancelled pull on
+-- BufLeave self-heals on the next BufEnter.
+vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
   callback = function(args)
     local buf = args.buf
     if not (vim.bo[buf].modifiable and not vim.bo[buf].readonly) then
