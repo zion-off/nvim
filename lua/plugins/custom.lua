@@ -8,24 +8,26 @@ local mole_spec = {
   },
 }
 
+local diff_spec = {
+  lazy = false,
+  config = function()
+    require("diff").setup()
+  end,
+}
+
 -- Load mole.nvim from a local working copy when developing it, otherwise from GitHub
-local mole_dev = vim.env.DEV_PLUGINS or os.getenv("DEV_PLUGINS")
-if mole_dev then
+local dev = 0
+if dev then
   mole_spec.dir = "~/projects/mole.nvim"
+  diff_spec.dir = "~/projects/diff"
 else
   mole_spec[1] = "zion-off/mole.nvim"
+  diff_spec[1] = "zion-off/diff.nvim"
 end
 
 return {
   -- Diff viewer/utility
-  {
-    "zion-off/diff",
-    lazy = false,
-    config = function()
-      require("diff").setup()
-    end,
-  },
-
+  diff_spec,
   -- Mole (bookmarks/annotations)
   mole_spec,
 }
