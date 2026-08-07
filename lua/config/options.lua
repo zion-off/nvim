@@ -18,6 +18,24 @@ vim.opt.background = "dark"
 vim.opt.pumblend = 0
 
 -- =====================
+-- Clipboard
+-- =====================
+-- Route yanks over OSC 52 so they land on the local machine's clipboard
+-- through SSH + tmux, since this VM has no X/Wayland display for xclip/wl-copy.
+vim.g.clipboard = {
+	name = "OSC 52",
+	copy = {
+		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+	},
+	paste = {
+		["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+		["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+	},
+}
+vim.opt.clipboard = "unnamedplus"
+
+-- =====================
 -- Editing
 -- =====================
 -- Increase timeout for which-key to prevent space key issues (LazyVim default is 300)
