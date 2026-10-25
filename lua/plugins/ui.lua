@@ -24,6 +24,11 @@ return {
     branch = "refactor/v2", -- drop once v2 lands on main (2026-11-16)
     event = "VeryLazy",
     opts = {
+      scrollbar = {
+        autohide = true,
+        track = { highlight = { bg = "#262626" } },
+        thumb = { highlight = { bg = "#6c6c6c" }, blend = 0 },
+      },
       marks = {
         Error = { text = { "█" }, highlight = { fg = "#ea6962" } },
         Warn = { text = { "█" }, highlight = { fg = "#d8a657" } },
