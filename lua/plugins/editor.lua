@@ -71,17 +71,6 @@ return {
     end,
   },
 
-  -- Which-key
-  {
-    "folke/which-key.nvim",
-    opts = function(_, opts)
-      opts.spec = opts.spec or {}
-      table.insert(opts.spec, {
-        { "<leader>a", group = "ai", icon = "󰧑" },
-      })
-    end,
-  },
-
   -- Gitsigns configuration
   {
     "lewis6991/gitsigns.nvim",
