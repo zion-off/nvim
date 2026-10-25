@@ -18,18 +18,17 @@ return {
   -- Scrollbar
   {
     "petertriho/nvim-scrollbar",
+    branch = "refactor/v2", -- drop once v2 lands on main (2026-11-16)
     event = "VeryLazy",
-    config = function()
-      require("scrollbar").setup({
-        marks = {
-          Error = { text = { "█" }, color = "#ea6962" },
-          Warn = { text = { "█" }, color = "#d8a657" },
-          Info = { text = { "█" }, color = "#7daea3" },
-          Hint = { text = { "█" }, color = "#a9b665" },
-          Misc = { text = { "█" }, color = "#d3869b" },
-        },
-      })
-    end,
+    opts = {
+      marks = {
+        Error = { text = { "█" }, highlight = { fg = "#ea6962" } },
+        Warn = { text = { "█" }, highlight = { fg = "#d8a657" } },
+        Info = { text = { "█" }, highlight = { fg = "#7daea3" } },
+        Hint = { text = { "█" }, highlight = { fg = "#a9b665" } },
+        Misc = { text = { "█" }, highlight = { fg = "#d3869b" } },
+      },
+    },
   },
 
   -- Bufferline
