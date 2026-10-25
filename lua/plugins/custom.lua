@@ -18,8 +18,8 @@ local diff_spec = {
 -- Load mole.nvim from a local working copy when developing it, otherwise from GitHub
 local dev = false
 if dev then
-  mole_spec.dir = "~/projects/mole.nvim"
-  diff_spec.dir = "~/projects/diff"
+  mole_spec[1] = "zion-off/mole.nvim"
+  diff_spec.dir = "~/workspace/diff"
 else
   mole_spec[1] = "zion-off/mole.nvim"
   diff_spec[1] = "zion-off/diff"
